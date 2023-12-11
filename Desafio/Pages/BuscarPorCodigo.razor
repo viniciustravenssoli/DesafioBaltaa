@@ -1,0 +1,53 @@
+﻿@page "/localidadecodigo"
+@using BaltaDesafioBlazor.Data
+@using BaltaDesafioBlazor.Model
+@inherits ComponentBase
+
+@inject ApplicationDbContext Context
+
+<h3>Localidades</h3>
+
+<div class="form-group">
+    <label for="codigo">Digite o codigo da cidade:</label>
+    <input id="codigo" @bind="codigo" class="form-control" />
+</div>
+
+<button @onclick="AtualizarLocalidades">Buscar</button>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>City</th>
+            <th>State</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (localidade != null)
+        {
+            <tr>
+                <td>@localidade.Id</td>
+                <td>@localidade.City</td>
+                <td>@localidade.State</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    Localidade localidade;
+    int codigo;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        AtualizarLocalidades();
+    }
+
+    private void AtualizarLocalidades()
+    {
+        localidade = Context.Localidades.FirstOrDefault(x => x.Id == codigo);
+    }
+
+
+}

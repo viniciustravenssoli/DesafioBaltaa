@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34322.80
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BaltaDesafioBlazor", "BaltaDesafioBlazor.csproj", "{F87E15A5-B1F9-4276-AB5A-509962BEC61B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F87E15A5-B1F9-4276-AB5A-509962BEC61B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F87E15A5-B1F9-4276-AB5A-509962BEC61B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F87E15A5-B1F9-4276-AB5A-509962BEC61B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F87E15A5-B1F9-4276-AB5A-509962BEC61B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9E2D7C26-4AB1-4BD4-95A3-48A9AF6ACC82}
+	EndGlobalSection
+EndGlobal

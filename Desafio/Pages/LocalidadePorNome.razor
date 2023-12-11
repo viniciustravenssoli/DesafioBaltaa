@@ -1,0 +1,63 @@
+﻿@page "/localidadecity"
+@using BaltaDesafioBlazor.Data
+@using BaltaDesafioBlazor.Model
+@inherits ComponentBase
+
+@inject ApplicationDbContext Context
+
+<h3>Localidades</h3>
+
+<div class="form-group">
+    <label for="cidade">Digite o nome da cidade:</label>
+    <input id="cidade" @bind="cidadePesquisada" class="form-control" />
+</div>
+
+<button @onclick="AtualizarLocalidades">Buscar</button>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>City</th>
+            <th>State</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var localidade in localidades)
+        {
+            <tr>
+                <td>@localidade.Id</td>
+                <td>@localidade.City</td>
+                <td>@localidade.State</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    List<Localidade> localidades;
+    string cidadePesquisada = string.Empty;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        AtualizarLocalidades();
+    }
+
+    private void AtualizarLocalidades()
+    {
+        if (string.IsNullOrWhiteSpace(cidadePesquisada))
+        {
+            localidades = Context.Localidades.ToList();
+        }
+        else
+        {
+            var localidadesAux = Context.Localidades.ToList();
+
+            localidades = localidadesAux.Where(l => l.City.Contains(cidadePesquisada, StringComparison.OrdinalIgnoreCase))
+                .ToList();
+        }
+    }
+
+
+}

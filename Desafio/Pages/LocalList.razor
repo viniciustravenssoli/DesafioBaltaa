@@ -1,0 +1,42 @@
+﻿@page "/localidade"
+@using BaltaDesafioBlazor.Data
+@using BaltaDesafioBlazor.Model
+@inherits ComponentBase
+
+@inject ApplicationDbContext Context
+
+<h3>Localidades</h3>
+
+<a href="/addlocalidade">Add New Localidade</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>City</th>
+            <th>State</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var localidade in localidades)
+        {
+            <tr>
+                <td>@localidade.Id</td>
+                <td>@localidade.City</td>
+                <td>@localidade.State</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+
+@code {
+    List<Localidade> localidades;
+
+    protected override async Task OnInitializedAsync()
+    {
+        localidades = Context.Localidades.ToList();
+    }
+
+}

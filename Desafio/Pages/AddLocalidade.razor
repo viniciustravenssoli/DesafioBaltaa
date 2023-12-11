@@ -1,0 +1,36 @@
+﻿@page "/addlocalidade"
+@using BaltaDesafioBlazor.Data
+@using BaltaDesafioBlazor.Model
+@inherits ComponentBase
+
+@inject ApplicationDbContext Context
+@inject NavigationManager NavigationManager
+
+<h3>Add Localidade</h3>
+
+<form @onsubmit="HandleSubmit">
+    <div>
+        <label for="code">Code:</label>
+        <input type="int" id="code" @bind="newLocalidade.Id" />
+    </div>
+    <div>
+        <label for="city">City:</label>
+        <input type="text" id="city" @bind="newLocalidade.City" />
+    </div>
+    <div>
+        <label for="state">State:</label>
+        <input type="text" id="state" @bind="newLocalidade.State" />
+    </div>
+    <button type="submit">Save</button>
+</form>
+
+@code {
+    Localidade newLocalidade = new Localidade();
+
+    private async Task HandleSubmit()
+    {
+        Context.Localidades.Add(newLocalidade);
+        await Context.SaveChangesAsync();
+        NavigationManager.NavigateTo("/localidade");
+    }
+}
