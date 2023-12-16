@@ -1,9 +1,13 @@
 ﻿@page "/localidadecity"
-@using BaltaDesafioBlazor.Data
-@using BaltaDesafioBlazor.Model
+
 @inherits ComponentBase
 
-@inject ApplicationDbContext Context
+@using BaltaDesafioBlazor.Shared.Models.Locality
+@using BaltaDesafioBlazor.Domain.Handlers.Queries
+
+@implements IDisposable
+
+@inject ILocalityQueryHandler Handler
 
 <h3>Localidades</h3>
 
@@ -23,7 +27,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var localidade in localidades)
+        @foreach (var localidade in localities)
         {
             <tr>
                 <td>@localidade.Id</td>
@@ -35,29 +39,27 @@
 </table>
 
 @code {
-    List<Localidade> localidades;
+    List<LocalityModel> localities = [];
     string cidadePesquisada = string.Empty;
+    CancellationTokenSource tokenSource = new();
 
-
-    protected override async Task OnInitializedAsync()
+    protected override Task OnInitializedAsync()
     {
-        AtualizarLocalidades();
+        return AtualizarLocalidades();
     }
 
-    private void AtualizarLocalidades()
+    private async Task AtualizarLocalidades()
     {
-        if (string.IsNullOrWhiteSpace(cidadePesquisada))
-        {
-            localidades = Context.Localidades.ToList();
-        }
-        else
-        {
-            var localidadesAux = Context.Localidades.ToList();
+        var result = await Handler.GetLocalitiesAsync(city: cidadePesquisada);
 
-            localidades = localidadesAux.Where(l => l.City.Contains(cidadePesquisada, StringComparison.OrdinalIgnoreCase))
-                .ToList();
+        if (result.Success)
+        {
+            localities = result.Result;
         }
     }
 
-
+    public void Dispose()
+    {
+        tokenSource.Cancel();
+    }
 }

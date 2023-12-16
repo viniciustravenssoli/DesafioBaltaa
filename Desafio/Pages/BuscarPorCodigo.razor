@@ -1,9 +1,13 @@
 ﻿@page "/localidadecodigo"
-@using BaltaDesafioBlazor.Data
-@using BaltaDesafioBlazor.Model
+
+@using BaltaDesafioBlazor.Shared.Models.Locality
+@using BaltaDesafioBlazor.Domain.Handlers.Queries
+
 @inherits ComponentBase
 
-@inject ApplicationDbContext Context
+@implements IDisposable
+
+@inject ILocalityQueryHandler Handler
 
 <h3>Localidades</h3>
 
@@ -23,31 +27,40 @@
         </tr>
     </thead>
     <tbody>
-        @if (localidade != null)
+        @if (locality != null)
         {
             <tr>
-                <td>@localidade.Id</td>
-                <td>@localidade.City</td>
-                <td>@localidade.State</td>
+                <td>@locality.Id</td>
+                <td>@locality.City</td>
+                <td>@locality.State</td>
             </tr>
         }
     </tbody>
 </table>
 
 @code {
-    Localidade localidade;
-    int codigo;
+    LocalityModel locality = new();
+    string codigo = string.Empty;
+    CancellationTokenSource tokenSource = new();
 
 
-    protected override async Task OnInitializedAsync()
+    protected override Task OnInitializedAsync()
     {
-        AtualizarLocalidades();
+        return AtualizarLocalidades();
     }
 
-    private void AtualizarLocalidades()
+    private async Task AtualizarLocalidades()
     {
-        localidade = Context.Localidades.FirstOrDefault(x => x.Id == codigo);
+        var result = await Handler.GetLocalityAsync(codigo);
+
+        if (result.Success)
+        {
+            locality = result.Result;
+        }
     }
 
-
+    public void Dispose()
+    {
+        tokenSource.Cancel();
+    }
 }
