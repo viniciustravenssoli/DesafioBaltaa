@@ -1,5 +1,7 @@
 ﻿@page "/localidadestate"
 
+@attribute [StreamRendering(true)]
+
 @inherits ComponentBase
 
 @using BaltaDesafioBlazor.Shared.Models.Locality
@@ -11,46 +13,54 @@
 
 <h3>Localidades</h3>
 
-<div class="form-group">
-    <label for="estadoPesquisado">Digite a sigla do estado:</label>
-    <input id="estadoPesquisado" @bind="estadoPesquisado" class="form-control" />
-</div>
+@if (localities is null)
+{
+    <h4>Carregando...</h4>
+}
+else
+{
+    <div class="form-group">
+        <label for="estadoPesquisado">Digite a sigla do estado:</label>
+        <input id="estadoPesquisado" @bind="estadoPesquisado" class="form-control" />
+    </div>
 
-<button @onclick="AtualizarLocalidades">Buscar</button>
+    <button @onclick="AtualizarLocalidades">Buscar</button>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Id</th>
-            <th>City</th>
-            <th>State</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var localidade in localities)
-        {
+    <table class="table">
+        <thead>
             <tr>
-                <td>@localidade.Id</td>
-                <td>@localidade.City</td>
-                <td>@localidade.State</td>
+                <th>Id</th>
+                <th>City</th>
+                <th>State</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var localidade in localities)
+            {
+                <tr>
+                    <td>@localidade.Id</td>
+                    <td>@localidade.City</td>
+                    <td>@localidade.State</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
 
 @code {
-    List<LocalityModel> localities = [];
+    List<LocalityModel>? localities;
     string estadoPesquisado = string.Empty;
     CancellationTokenSource tokenSource = new();
 
-    protected override Task OnInitializedAsync()
+    protected override async Task OnInitializedAsync()
     {
-        return AtualizarLocalidades();
+        await AtualizarLocalidades()
+            .ConfigureAwait(false);
     }
 
     private async Task AtualizarLocalidades()
     {
-        var result = await Handler.GetLocalitiesAsync(state: estadoPesquisado);
+        var result = await Handler.GetLocalitiesAsync(state: estadoPesquisado, cancellationToken: tokenSource.Token);
 
         if (result.Success)
         {

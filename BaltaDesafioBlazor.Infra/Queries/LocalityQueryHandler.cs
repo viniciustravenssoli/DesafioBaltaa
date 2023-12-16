@@ -14,13 +14,21 @@ internal class LocalityQueryHandler(IDbContextFactory<DataContext> contextFactor
         {
             await using var context = contextFactory.CreateDbContext();
             var query = context.Localities
-                .AsNoTracking()
-                .Where(i =>
-                string.IsNullOrWhiteSpace(i.State) ||
-                string.IsNullOrWhiteSpace(i.City) ||
-                i.State.Contains(state, StringComparison.OrdinalIgnoreCase) ||
-                i.City.Contains(city, StringComparison.OrdinalIgnoreCase))
-                .OrderBy(i => i.Id);
+                .AsNoTracking();
+
+            if (!string.IsNullOrWhiteSpace(state))
+            {
+                query = query.Where(i => i.State.ToLower().Contains(state.ToLower()));
+            }
+
+            if (!string.IsNullOrWhiteSpace(city))
+            {
+                query = query.Where(i => i.City.ToLower().Contains(city.ToLower()));
+            }
+
+            query = query
+                .OrderBy(i => i.State)
+                .ThenBy(i => i.City);
 
             var total = await query
                 .CountAsync(cancellationToken)

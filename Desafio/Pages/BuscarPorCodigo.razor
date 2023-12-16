@@ -3,6 +3,8 @@
 @using BaltaDesafioBlazor.Shared.Models.Locality
 @using BaltaDesafioBlazor.Domain.Handlers.Queries
 
+@attribute [StreamRendering]
+
 @inherits ComponentBase
 
 @implements IDisposable
@@ -11,47 +13,55 @@
 
 <h3>Localidades</h3>
 
-<div class="form-group">
-    <label for="codigo">Digite o codigo da cidade:</label>
-    <input id="codigo" @bind="codigo" class="form-control" />
-</div>
+@if (locality == null)
+{
+    <h4>Carregando...</h4>
+}
+else
+{
+    <div class="form-group">
+        <label for="codigo">Digite o codigo da cidade:</label>
+        <input id="codigo" @bind="codigo" class="form-control" />
+    </div>
 
-<button @onclick="AtualizarLocalidades">Buscar</button>
+    <button @onclick="AtualizarLocalidades">Buscar</button>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Id</th>
-            <th>City</th>
-            <th>State</th>
-        </tr>
-    </thead>
-    <tbody>
-        @if (locality != null)
-        {
+    <table class="table">
+        <thead>
             <tr>
-                <td>@locality.Id</td>
-                <td>@locality.City</td>
-                <td>@locality.State</td>
+                <th>Id</th>
+                <th>City</th>
+                <th>State</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @if (locality != null)
+            {
+                <tr>
+                    <td>@locality.Id</td>
+                    <td>@locality.City</td>
+                    <td>@locality.State</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
 
 @code {
-    LocalityModel locality = new();
+    LocalityModel? locality;
     string codigo = string.Empty;
     CancellationTokenSource tokenSource = new();
 
 
-    protected override Task OnInitializedAsync()
+    protected override async Task OnInitializedAsync()
     {
-        return AtualizarLocalidades();
+        await AtualizarLocalidades()
+            .ConfigureAwait(false);
     }
 
     private async Task AtualizarLocalidades()
     {
-        var result = await Handler.GetLocalityAsync(codigo);
+        var result = await Handler.GetLocalityAsync(codigo, cancellationToken: tokenSource.Token);
 
         if (result.Success)
         {

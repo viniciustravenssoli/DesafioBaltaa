@@ -41,7 +41,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var result = await Handler.GetLocalitiesAsync();
+        var result = await Handler.GetLocalitiesAsync(cancellationToken: tokenSource.Token);
 
         if (result.Success)
         {
