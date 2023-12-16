@@ -8,8 +8,13 @@ public abstract class Entity
 
     protected Entity(string id)
     {
-        Id = id;
+        Update(id);
     }
 
     public string Id { get; private set; } = null!;
+
+    internal void Update(string id)
+    {
+        Id = id.Trim();
+    }
 }
