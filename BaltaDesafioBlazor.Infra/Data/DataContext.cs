@@ -5,9 +5,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BaltaDesafioBlazor.Infra.Data;
 
-public class ApplicationDbContext : IdentityDbContext
+public class DataContext : IdentityDbContext
 {
-    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+    public DataContext(DbContextOptions<DataContext> options)
         : base(options)
     {
     }
