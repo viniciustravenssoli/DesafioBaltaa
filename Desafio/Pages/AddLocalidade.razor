@@ -1,9 +1,11 @@
 ﻿@page "/addlocalidade"
-@using BaltaDesafioBlazor.Data
+
+@using BaltaDesafioBlazor.Infra.Data
 @using BaltaDesafioBlazor.Model
+
 @inherits ComponentBase
 
-@inject ApplicationDbContext Context
+@inject DataContext Context
 @inject NavigationManager NavigationManager
 
 <h3>Add Localidade</h3>
@@ -29,8 +31,8 @@
 
     private async Task HandleSubmit()
     {
-        Context.Localidades.Add(newLocalidade);
+        /*Context.Localities.Add(newLocalidade);
         await Context.SaveChangesAsync();
-        NavigationManager.NavigateTo("/localidade");
+        NavigationManager.NavigateTo("/localidade");*/
     }
 }

@@ -1,6 +1,8 @@
 ﻿namespace BaltaDesafioBlazor.Domain.Contracts;
 
-public interface ICommandHandler<T> where T : ICommand
+public interface ICommandHandler<TCommand, TCommandResult>
+    where TCommand : ICommand
+    where TCommandResult : ICommandResult
 {
-    Task<ICommandResult> ExecuteAsync(T command, CancellationToken cancellationToken = default);
+    Task<TCommandResult> ExecuteAsync(TCommand command, CancellationToken cancellationToken = default);
 }
