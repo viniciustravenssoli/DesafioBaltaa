@@ -1,53 +1,76 @@
 ﻿@page "/localidadecodigo"
-@using BaltaDesafioBlazor.Data
-@using BaltaDesafioBlazor.Model
+
+@using BaltaDesafioBlazor.Shared.Models.Locality
+@using BaltaDesafioBlazor.Domain.Handlers.Queries
+
+@attribute [StreamRendering]
+
 @inherits ComponentBase
 
-@inject ApplicationDbContext Context
+@implements IDisposable
+
+@inject ILocalityQueryHandler Handler
 
 <h3>Localidades</h3>
 
-<div class="form-group">
-    <label for="codigo">Digite o codigo da cidade:</label>
-    <input id="codigo" @bind="codigo" class="form-control" />
-</div>
+@if (locality == null)
+{
+    <h4>Carregando...</h4>
+}
+else
+{
+    <div class="form-group">
+        <label for="codigo">Digite o codigo da cidade:</label>
+        <input id="codigo" @bind="codigo" class="form-control" />
+    </div>
 
-<button @onclick="AtualizarLocalidades">Buscar</button>
+    <button @onclick="AtualizarLocalidades">Buscar</button>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Id</th>
-            <th>City</th>
-            <th>State</th>
-        </tr>
-    </thead>
-    <tbody>
-        @if (localidade != null)
-        {
+    <table class="table">
+        <thead>
             <tr>
-                <td>@localidade.Id</td>
-                <td>@localidade.City</td>
-                <td>@localidade.State</td>
+                <th>Id</th>
+                <th>City</th>
+                <th>State</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @if (locality != null)
+            {
+                <tr>
+                    <td>@locality.Id</td>
+                    <td>@locality.City</td>
+                    <td>@locality.State</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
 
 @code {
-    Localidade localidade;
-    int codigo;
+    LocalityModel? locality;
+    string codigo = string.Empty;
+    CancellationTokenSource tokenSource = new();
 
 
     protected override async Task OnInitializedAsync()
     {
-        AtualizarLocalidades();
+        await AtualizarLocalidades()
+            .ConfigureAwait(false);
     }
 
-    private void AtualizarLocalidades()
+    private async Task AtualizarLocalidades()
     {
-        localidade = Context.Localidades.FirstOrDefault(x => x.Id == codigo);
+        var result = await Handler.GetLocalityAsync(codigo, cancellationToken: tokenSource.Token);
+
+        if (result.Success)
+        {
+            locality = result.Result;
+        }
     }
 
-
+    public void Dispose()
+    {
+        tokenSource.Cancel();
+    }
 }

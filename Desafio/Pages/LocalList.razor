@@ -1,9 +1,13 @@
 ﻿@page "/localidade"
-@using BaltaDesafioBlazor.Data
-@using BaltaDesafioBlazor.Model
+
+@using BaltaDesafioBlazor.Shared.Models.Locality
+@using BaltaDesafioBlazor.Domain.Handlers.Queries
+
 @inherits ComponentBase
 
-@inject ApplicationDbContext Context
+@implements IDisposable
+
+@inject ILocalityQueryHandler Handler
 
 <h3>Localidades</h3>
 
@@ -18,7 +22,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var localidade in localidades)
+        @foreach (var localidade in localities)
         {
             <tr>
                 <td>@localidade.Id</td>
@@ -32,11 +36,21 @@
 
 
 @code {
-    List<Localidade> localidades;
+    List<LocalityModel> localities = [];
+    CancellationTokenSource tokenSource = new();
 
     protected override async Task OnInitializedAsync()
     {
-        localidades = Context.Localidades.ToList();
+        var result = await Handler.GetLocalitiesAsync(cancellationToken: tokenSource.Token);
+
+        if (result.Success)
+        {
+            localities = result.Result;
+        }
     }
 
+    public void Dispose()
+    {
+        tokenSource.Cancel();
+    }
 }
