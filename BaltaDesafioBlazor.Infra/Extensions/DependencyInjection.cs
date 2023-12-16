@@ -1,5 +1,7 @@
-﻿using BaltaDesafioBlazor.Domain.Repositories;
+﻿using BaltaDesafioBlazor.Domain.Handlers.Queries;
+using BaltaDesafioBlazor.Domain.Repositories;
 using BaltaDesafioBlazor.Infra.Data;
+using BaltaDesafioBlazor.Infra.Queries;
 using BaltaDesafioBlazor.Infra.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -11,6 +13,7 @@ public static class DependencyInjection
     {
         return services
             .AddDbContextFactory<DataContext>()
-            .AddTransient<ILocalityRepository, LocalityRepository>();
+            .AddTransient<ILocalityRepository, LocalityRepository>()
+            .AddScoped<ILocalityQueryHandler, LocalityQueryHandler>();
     }
 }
