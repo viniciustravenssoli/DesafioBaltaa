@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BaltaDesafioBlazor.Infra.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20231216143749_InitialMigration")]
+    [Migration("20231216145717_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -30,19 +30,22 @@ namespace BaltaDesafioBlazor.Infra.Migrations
                     b.Property<string>("Id")
                         .HasMaxLength(7)
                         .HasColumnType("CHAR")
-                        .HasColumnName("Id");
+                        .HasColumnName("Id")
+                        .HasColumnOrder(0);
 
                     b.Property<string>("City")
                         .IsRequired()
                         .HasMaxLength(80)
                         .HasColumnType("NVARCHAR")
-                        .HasColumnName("City");
+                        .HasColumnName("City")
+                        .HasColumnOrder(2);
 
                     b.Property<string>("State")
                         .IsRequired()
                         .HasMaxLength(2)
                         .HasColumnType("CHAR")
-                        .HasColumnName("State");
+                        .HasColumnName("State")
+                        .HasColumnOrder(1);
 
                     b.HasKey("Id");
 

@@ -55,8 +55,8 @@ namespace BaltaDesafioBlazor.Infra.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "CHAR(7)", maxLength: 7, nullable: false),
-                    City = table.Column<string>(type: "NVARCHAR(80)", maxLength: 80, nullable: false),
-                    State = table.Column<string>(type: "CHAR(2)", maxLength: 2, nullable: false)
+                    State = table.Column<string>(type: "CHAR(2)", maxLength: 2, nullable: false),
+                    City = table.Column<string>(type: "NVARCHAR(80)", maxLength: 80, nullable: false)
                 },
                 constraints: table =>
                 {
