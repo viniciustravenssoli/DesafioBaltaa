@@ -12,15 +12,13 @@ public sealed class LocalityHandler(ILocalityRepository localityRepository) :
     ICommandHandler<UpdateLocalityCommand, GenericCommandResult>,
     ICommandHandler<DeleteLocalityCommand, GenericCommandResult>
 {
-    private readonly ILocalityRepository _localityRepository = localityRepository;
-
     public async Task<GenericCommandResult> ExecuteAsync(CreateLocalityCommand command, CancellationToken cancellationToken = default)
     {
         if (!command.IsValid)
             return GenericCommandResult.ErrorResult(command.Errors);
 
         var locality = new Locality(command.Id, command.City, command.State);
-        var result = await _localityRepository
+        var result = await localityRepository
             .CreateAsync(locality, cancellationToken)
             .ConfigureAwait(false);
 
@@ -34,7 +32,7 @@ public sealed class LocalityHandler(ILocalityRepository localityRepository) :
         if (!command.IsValid)
             return GenericCommandResult.ErrorResult(command.Errors);
 
-        var locality = await _localityRepository
+        var locality = await localityRepository
             .GetAsync(command.Id, cancellationToken)
             .ConfigureAwait(false);
 
@@ -45,7 +43,7 @@ public sealed class LocalityHandler(ILocalityRepository localityRepository) :
 
         locality.Update(command.Id, command.City, command.State);
 
-        var result = await _localityRepository
+        var result = await localityRepository
             .UpdateAsync(locality, cancellationToken)
             .ConfigureAwait(false);
 
@@ -59,7 +57,7 @@ public sealed class LocalityHandler(ILocalityRepository localityRepository) :
         if (!command.IsValid)
             return GenericCommandResult.ErrorResult(command.Errors);
 
-        var result = await _localityRepository
+        var result = await localityRepository
             .DeleteAsync(command.Id, cancellationToken)
             .ConfigureAwait(false);
 
