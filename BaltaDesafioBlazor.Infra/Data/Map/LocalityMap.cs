@@ -16,20 +16,23 @@ public class LocalityMap : IEntityTypeConfiguration<Locality>
             .IsRequired()
             .HasColumnName("Id")
             .HasColumnType("CHAR")
-            .HasMaxLength(7);
+            .HasMaxLength(7)
+            .HasColumnOrder(0);
 
         builder.Property(i => i.State)
             .IsRequired()
             .HasColumnName("State")
             .HasColumnType("CHAR")
-            .HasMaxLength(2);
+            .HasMaxLength(2)
+            .HasColumnOrder(1);
         builder.HasIndex(i => i.State, "IX_IBGE_State");
 
         builder.Property(i => i.City)
             .IsRequired()
             .HasColumnName("City")
             .HasColumnType("NVARCHAR")
-            .HasMaxLength(80);
+            .HasMaxLength(80)
+            .HasColumnOrder(2);
         builder.HasIndex(i => i.City, "IX_IBGE_City");
     }
 }
