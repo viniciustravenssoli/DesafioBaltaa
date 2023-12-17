@@ -46,6 +46,8 @@ else
 
     CancellationTokenSource tokenSource = new();
 
+    string oldId = string.Empty;
+
     [Parameter]
     public string Id { get; set; }
 
@@ -57,13 +59,15 @@ else
         {
             model = result.Result;
         }
+
+        oldId = model.Id;
     }
 
     private async Task UpdateLocalidade()
     {
         if (model != null)
         {
-            var command = model.ToUpdateCommand(model.Id);
+            var command = model.ToUpdateCommand(oldId);
             var result = await Handler.ExecuteAsync(command, tokenSource.Token);
         }
 
