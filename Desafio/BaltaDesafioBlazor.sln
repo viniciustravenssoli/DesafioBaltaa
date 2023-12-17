@@ -7,11 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BaltaDesafioBlazor", "Balta
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{99DB57AC-BBDE-4A8E-A2F7-6CF394B93E40}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BaltaDesafioBlazor.Domain", "..\BaltaDesafioBlazor.Domain\BaltaDesafioBlazor.Domain.csproj", "{14CEA34E-7F35-4BB1-8C33-A3AE8B651D50}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BaltaDesafioBlazor.Domain", "..\BaltaDesafioBlazor.Domain\BaltaDesafioBlazor.Domain.csproj", "{14CEA34E-7F35-4BB1-8C33-A3AE8B651D50}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BaltaDesafioBlazor.Infra", "..\BaltaDesafioBlazor.Infra\BaltaDesafioBlazor.Infra.csproj", "{B11D79F8-BD68-4C8B-B473-A3BC73BFB5EF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BaltaDesafioBlazor.Infra", "..\BaltaDesafioBlazor.Infra\BaltaDesafioBlazor.Infra.csproj", "{B11D79F8-BD68-4C8B-B473-A3BC73BFB5EF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BaltaDesafioBlazor.Shared", "..\BaltaDesafioBlazor.Shared\BaltaDesafioBlazor.Shared.csproj", "{0A9912A0-C556-4A76-A5AF-DE1352F0A320}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BaltaDesafioBlazor.Shared", "..\BaltaDesafioBlazor.Shared\BaltaDesafioBlazor.Shared.csproj", "{0A9912A0-C556-4A76-A5AF-DE1352F0A320}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

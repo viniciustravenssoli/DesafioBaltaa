@@ -1,0 +1,72 @@
+﻿@page "/editlocalidade/{Id}"
+
+@using BaltaDesafioBlazor.Domain.Handlers.Commands
+@using BaltaDesafioBlazor.Domain.Handlers.Queries
+@using BaltaDesafioBlazor.Shared.Models.Locality
+@using BaltaDesafioBlazor.Infra.Extensions.ModelExtensions
+
+@inject ILocalityQueryHandler IHandler
+@inject LocalityHandler Handler
+@inject NavigationManager NavigationManager
+
+@inherits ComponentBase
+
+
+<h3>Edit Localidade</h3>
+
+@if (model == null)
+{
+    <p>Carregando...</p>
+}
+else
+{
+    <form>
+        <div class="form-group">
+            <label for="codigo">Codigo:</label>
+            <input type="text" class="form-control" id="codigo" @bind="model.Id" />
+        </div>
+
+        <div class="form-group">
+            <label for="city">City:</label>
+            <input type="text" class="form-control" id="city" @bind="model.City" />
+        </div>
+
+        <div class="form-group">
+            <label for="state">State:</label>
+            <input type="text" class="form-control" id="state" @bind="model.State" />
+        </div>
+
+        <button type="button" class="btn btn-primary" @onclick="UpdateLocalidade">Salvar</button>
+        <a href="/localidade">Cancelar</a>
+    </form>
+}
+
+@code {
+    LocalityModel model = new();
+
+    CancellationTokenSource tokenSource = new();
+
+    [Parameter]
+    public string Id { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var result = await IHandler.GetLocalityAsync(Id, cancellationToken: tokenSource.Token);
+
+        if (result.Success)
+        {
+            model = result.Result;
+        }
+    }
+
+    private async Task UpdateLocalidade()
+    {
+        if (model != null)
+        {
+            var command = model.ToUpdateCommand();
+            var result = await Handler.ExecuteAsync(command, tokenSource.Token);
+        }
+
+        NavigationManager.NavigateTo("/localidade");
+    }
+}

@@ -1,7 +1,7 @@
 ﻿@page "/addlocalidade"
 
-@using BaltaDesafioBlazor.Shared.Models.Locality
 @using BaltaDesafioBlazor.Domain.Handlers.Commands
+@using BaltaDesafioBlazor.Shared.Models.Locality
 @using BaltaDesafioBlazor.Infra.Extensions.ModelExtensions
 
 @inherits ComponentBase
@@ -28,9 +28,24 @@
     <button type="submit">Save</button>
 </form>
 
+
+@if (errorMessages.Any())
+{
+    <div class="alert alert-danger">
+        <ul>
+            @foreach (var errorMessage in errorMessages)
+            {
+                <li>@errorMessage</li>
+            }
+        </ul>
+    </div>
+}
+
+
 @code {
     CancellationTokenSource _tokenSource = new();
     LocalityModel model = new();
+    List<string> errorMessages = new List<string>();
 
     private async Task HandleSubmit()
     {
@@ -41,6 +56,8 @@
         {
             NavigationManager.NavigateTo("/localidade");
         }
+
+        errorMessages = result.Errors.ToList();
     }
 
     public void Dispose()

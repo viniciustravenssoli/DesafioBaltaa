@@ -8,6 +8,7 @@
 @implements IDisposable
 
 @inject ILocalityQueryHandler Handler
+@inject NavigationManager NavigationManager
 
 <h3>Localidades</h3>
 
@@ -28,6 +29,9 @@
                 <td>@localidade.Id</td>
                 <td>@localidade.City</td>
                 <td>@localidade.State</td>
+                <td>
+                    <button class="btn btn-primary" @onclick="() => EditLocalidade(localidade.Id)">Edit</button>
+                </td>
             </tr>
         }
     </tbody>
@@ -47,6 +51,10 @@
         {
             localities = result.Result;
         }
+    }
+    private void EditLocalidade(string localidadeId)
+    {
+        NavigationManager.NavigateTo($"/editlocalidade/{localidadeId}");
     }
 
     public void Dispose()
