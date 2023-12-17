@@ -60,6 +60,8 @@ else
 
     private async Task AtualizarLocalidades()
     {
+        await Task.Delay(500, tokenSource.Token);//User friendly delay
+
         var result = await Handler.GetLocalitiesAsync(city: cidadePesquisada, cancellationToken:tokenSource.Token);
 
         if (result.Success)

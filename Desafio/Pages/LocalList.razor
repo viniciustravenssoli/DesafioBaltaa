@@ -41,6 +41,8 @@
 
     protected override async Task OnInitializedAsync()
     {
+        await Task.Delay(500, tokenSource.Token);//User friendly delay
+
         var result = await Handler.GetLocalitiesAsync(cancellationToken: tokenSource.Token);
 
         if (result.Success)
