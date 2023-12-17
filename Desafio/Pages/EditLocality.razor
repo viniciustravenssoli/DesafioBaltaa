@@ -63,7 +63,7 @@ else
     {
         if (model != null)
         {
-            var command = model.ToUpdateCommand();
+            var command = model.ToUpdateCommand(model.Id);
             var result = await Handler.ExecuteAsync(command, tokenSource.Token);
         }
 
