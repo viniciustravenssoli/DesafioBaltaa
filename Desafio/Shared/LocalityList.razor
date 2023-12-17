@@ -15,7 +15,7 @@
             AllowClear="true"
             ValueChanged="OnSearchCity"
             WrapperStyle="width: 200px;" />
-    <AddLocalityDialog />
+    <AddLocalityDialog OnAdd="LoadAsync"/>
 </div>
 
 <Table TItem="LocalityModel"
@@ -33,7 +33,8 @@
     <ActionColumn Title="Ações">
         <Space>
             <SpaceItem>
-                <EditLocalityDialog Locality="@context" />
+                <EditLocalityDialog Locality="@context" 
+                                    OnEdit="LoadAsync"/>
             </SpaceItem>
             <SpaceItem>
                 <Button Type="@AntDesign.ButtonType.Text"

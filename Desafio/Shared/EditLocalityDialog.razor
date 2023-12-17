@@ -43,8 +43,8 @@
 
         if (result.Success)
         {
-             _isVisible = false;
-             NavigationManager.NavigateTo("/");
+            _isVisible = false;
+            await OnEdit.InvokeAsync();
         }
     }
 
@@ -52,4 +52,7 @@
 
     [Parameter]
     public LocalityModel Locality { get; set; } = null!;
+
+    [Parameter]
+    public EventCallback OnEdit { get; set; }
 }

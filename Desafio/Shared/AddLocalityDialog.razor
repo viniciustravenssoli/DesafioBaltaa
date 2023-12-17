@@ -41,9 +41,12 @@
         if (result.Success)
         {
             _isVisible = false;
-            NavigationManager.NavigateTo("/");
+            await OnAdd.InvokeAsync();
         }
     }
 
     [CascadingParameter] CancellationToken Token { get; set; }
+
+    [Parameter]
+    public EventCallback OnAdd { get; set; }
 }
