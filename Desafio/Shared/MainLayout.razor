@@ -2,15 +2,15 @@
 
 <PageTitle>Desafio Blazor</PageTitle>
 
-<Layout Style="height:100%">
+<Layout Style="min-height:100%">
     <Header Class="bg-transparent">
-        <div class="d-flex flex-row gap-1 justify-content-between">
+        <div class="d-flex flex-row gap-1 justify-content-between flex-wrap-reverse">
             <Text Class="fs-3">Desafio Blazor</Text>
             <LoginDisplay />
         </div>
     </Header>
     <Content>
-        <article class="content px-4">
+        <article style="padding-top:54px">
             @Body
         </article>
     </Content>
