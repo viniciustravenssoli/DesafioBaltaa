@@ -1,0 +1,54 @@
+﻿@using BaltaDesafioBlazor.Shared.Models.Locality
+
+@rendermode InteractiveServer
+
+<div class="d-flex flex-row flex-wrap gap-1 m-2 justify-content-end">
+    <Search Placeholder="Buscar código"
+            AllowClear="true"
+            ValueChanged="OnSearchCode"
+            WrapperStyle="width: 200px;" />
+    <Search Placeholder="Buscar estado"
+            AllowClear="true"
+            ValueChanged="OnSearchState"
+            WrapperStyle="width: 200px;" />
+    <Search Placeholder="Buscar cidade"
+            AllowClear="true"
+            ValueChanged="OnSearchCity"
+            WrapperStyle="width: 200px;" />
+    <AddLocalityDialog OnAdd="LoadAsync" />
+</div>
+
+<Table TItem="LocalityModel"
+       OnChange="OnChange"
+       Loading="_loading"
+       DataSource="_localities"
+       @bind-PageIndex="_pageIndex"
+       @bind-PageSize="_pageSize"
+       Total="_totalRows"
+       Size="TableSize.Small"
+       ScrollY="70vh"
+       Context="locality">
+    <PropertyColumn Property="c=>c.Id" />
+    <PropertyColumn Property="c=>c.City" />
+    <PropertyColumn Property="c=>c.State" />
+    <AuthorizeView>
+        <ActionColumn Title="Ações">
+            <Space>
+                <SpaceItem>
+                    <EditLocalityDialog Locality="@locality"
+                                        OnEdit="LoadAsync" />
+                </SpaceItem>
+                <SpaceItem>
+                    <Popconfirm Title="Deletar localidade?"
+                                OnConfirm="@(() => OnDelete(locality))"
+                                OkText="Excluir"
+                                CancelText="Cancelar">
+                        <Button Type="@AntDesign.ButtonType.Text"
+                                Icon="@AntDesign.IconType.Outline.Delete"
+                                Danger="true" />
+                    </Popconfirm>
+                </SpaceItem>
+            </Space>
+        </ActionColumn>
+    </AuthorizeView>
+</Table>

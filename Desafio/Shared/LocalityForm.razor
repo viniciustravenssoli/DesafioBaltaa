@@ -1,0 +1,77 @@
+﻿@using BaltaDesafioBlazor.Shared.Models.Locality
+
+<Form Model="_locality"
+      Layout="@FormLayout.Vertical"
+      OnFinish="OnFinish"
+      Loading="_loading"
+      @ref="_form">
+    <FormItem>
+        <Input @bind-Value="@context.Id" />
+    </FormItem>
+    <FormItem>
+        <Input @bind-Value="@context.State" />
+    </FormItem>
+    <FormItem>
+        <Input @bind-Value="@context.City" />
+    </FormItem>
+    <FormItem>
+        <Button Type="@ButtonType.Text"
+                OnClick="OnCancel">
+            Cancelar
+        </Button>
+        <Button Type="@ButtonType.Primary"
+                HtmlType="submit">
+            Confirmar
+        </Button>
+    </FormItem>
+</Form>
+
+@code {
+    private Form<LocalityModel> _form = null!;
+    private bool _loading;
+    private LocalityModel _locality = new();
+
+    private async Task OnFinish(EditContext editContext)
+    {
+        _loading = true;
+        await OnSubmit.InvokeAsync(_locality);
+        _loading = false;
+    }
+
+    [Parameter]
+    public LocalityModel? Locality { get; set; }
+
+    [Parameter]
+    public EventCallback<LocalityModel> OnSubmit { get; set; }
+
+    [Parameter]
+    public EventCallback OnCancel { get; set; }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            Default();
+        }
+    }
+
+    public void Reset()
+    {
+        _form.Reset();
+    }
+
+    public void Default()
+    {
+        if (Locality is not null)
+        {
+            _locality = new()
+            {
+                Id = Locality.Id,
+                City = Locality.City,
+                State = Locality.State
+            };
+
+            StateHasChanged();
+        }
+    }
+}

@@ -1,5 +1,5 @@
 ﻿<CascadingAuthenticationState>
-    <Router AppAssembly="@typeof(App).Assembly">
+    <Router AppAssembly="@typeof(App).Assembly" @rendermode="RenderMode.InteractiveAuto">
         <Found Context="routeData">
             <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
             <FocusOnNavigate RouteData="@routeData" Selector="h1" />
@@ -12,3 +12,4 @@
         </NotFound>
     </Router>
 </CascadingAuthenticationState>
+<AntContainer @rendermode="RenderMode.InteractiveAuto" /> 

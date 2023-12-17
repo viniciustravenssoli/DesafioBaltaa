@@ -1,0 +1,68 @@
+﻿@using BaltaDesafioBlazor.Shared.Models.Locality
+@using BaltaDesafioBlazor.Domain.Handlers.Commands
+@using BaltaDesafioBlazor.Infra.Extensions.ModelExtensions
+
+@inject LocalityHandler Handler
+@inject NavigationManager NavigationManager
+@inject IMessageService MessageService
+
+<AuthorizeView>
+    <Button Icon="@AntDesign.IconType.Outline.Edit"
+            Type="@AntDesign.ButtonType.Text"
+            OnClick="OnOpen" />
+</AuthorizeView>
+<Modal @bind-Visible="_isVisible"
+       Footer="@footer"
+       Centered="true"
+       Title="Adicionar localidade">
+    <LocalityForm OnSubmit="OnSubmit"
+                  OnCancel="(() => _isVisible = false)"
+                  Locality="Locality"
+                  @ref="_form" />
+</Modal>
+
+@code
+{
+    private LocalityForm? _form;
+    private bool _isVisible;
+
+    RenderFragment footer =
+        @<Template>
+        </Template>;
+
+    private void OnOpen()
+    {
+        _isVisible = true;
+        _form?.Default();
+    }
+
+    private async Task OnSubmit(LocalityModel model)
+    {
+        var command = model.ToUpdateCommand(Locality.Id);
+
+        var result = await Handler.ExecuteAsync(command, Token);
+
+        if (result.Success)
+        {
+            _isVisible = false;
+            await Task.WhenAll(
+            MessageService.Info("Localidade editada"),
+            OnEdit.InvokeAsync())
+            .ConfigureAwait(false);
+        }
+        else
+        {
+            await MessageService
+                .Error("Erro ao editar localidade")
+                .ConfigureAwait(false);
+        }
+    }
+
+    [CascadingParameter] CancellationToken Token { get; set; }
+
+    [Parameter]
+    public LocalityModel Locality { get; set; } = null!;
+
+    [Parameter]
+    public EventCallback OnEdit { get; set; }
+}

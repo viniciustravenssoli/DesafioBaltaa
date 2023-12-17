@@ -1,20 +1,18 @@
 ﻿@inherits LayoutComponentBase
 
-<PageTitle>BaltaDesafioBlazor</PageTitle>
+<PageTitle>Desafio Blazor</PageTitle>
 
-<div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
-
-    <main>
-        <div class="top-row px-4 auth">
+<Layout Style="min-height:100%">
+    <Header Class="bg-transparent">
+        <div class="d-flex flex-row gap-1 justify-content-between flex-wrap-reverse">
+            <Text Class="fs-3">Desafio Blazor</Text>
             <LoginDisplay />
-            <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
         </div>
-
-        <article class="content px-4">
+    </Header>
+    <Content>
+        <article style="padding-top:54px">
             @Body
         </article>
-    </main>
-</div>
+    </Content>
+    <Footer></Footer>
+</Layout>
