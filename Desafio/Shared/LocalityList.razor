@@ -15,12 +15,7 @@
             AllowClear="true"
             ValueChanged="OnSearchCity"
             WrapperStyle="width: 200px;" />
-    <AuthorizeView>
-        <Button Icon="@AntDesign.IconType.Outline.Plus"
-                Type="@AntDesign.ButtonType.Primary">
-            Localidade
-        </Button>
-    </AuthorizeView>
+    <AddLocalityDialog/>
 </div>
 
 <Table TItem="LocalityModel"

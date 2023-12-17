@@ -3,7 +3,8 @@
 <Form Model="_locality"
       Layout="@FormLayout.Vertical"
       OnFinish="OnFinish"
-      Loading="_loading">
+      Loading="_loading"
+      @ref="_form">
     <FormItem>
         <Input @bind-Value="@context.Id" />
     </FormItem>
@@ -14,13 +15,19 @@
         <Input @bind-Value="@context.City" />
     </FormItem>
     <FormItem>
-        <Button Type="@ButtonType.Text">Cancelar</Button>
+        <Button Type="@ButtonType.Text"
+                OnClick="OnCancel">
+            Cancelar
+        </Button>
         <Button Type="@ButtonType.Primary"
-                HtmlType="submit">Confirmar</Button>
+                HtmlType="submit">
+            Confirmar
+        </Button>
     </FormItem>
 </Form>
 
 @code {
+    private Form<LocalityModel> _form = null!;
     private bool _loading;
     private LocalityModel _locality = new();
 
@@ -36,6 +43,9 @@
 
     [Parameter]
     public EventCallback<LocalityModel> OnSubmit { get; set; }
+
+    [Parameter]
+    public EventCallback OnCancel { get; set; }
 
     protected override void OnAfterRender(bool firstRender)
     {
@@ -53,5 +63,10 @@
                 StateHasChanged();
             }
         }
+    }
+
+    public void Reset()
+    {
+        _form.Reset();
     }
 }
