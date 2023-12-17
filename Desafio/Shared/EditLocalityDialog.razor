@@ -4,11 +4,12 @@
 
 @inject LocalityHandler Handler
 @inject NavigationManager NavigationManager
+@inject IMessageService MessageService
 
 <AuthorizeView>
     <Button Icon="@AntDesign.IconType.Outline.Edit"
             Type="@AntDesign.ButtonType.Text"
-            OnClick="OnOpen"/>
+            OnClick="OnOpen" />
 </AuthorizeView>
 <Modal @bind-Visible="_isVisible"
        Footer="@footer"
@@ -20,7 +21,7 @@
                   @ref="_form" />
 </Modal>
 
-@code 
+@code
 {
     private LocalityForm? _form;
     private bool _isVisible;
@@ -44,7 +45,16 @@
         if (result.Success)
         {
             _isVisible = false;
-            await OnEdit.InvokeAsync();
+            await Task.WhenAll(
+            MessageService.Info("Localidade editada"),
+            OnEdit.InvokeAsync())
+            .ConfigureAwait(false);
+        }
+        else
+        {
+            await MessageService
+                .Error("Erro ao editar localidade")
+                .ConfigureAwait(false);
         }
     }
 

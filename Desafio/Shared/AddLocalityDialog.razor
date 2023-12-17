@@ -4,6 +4,7 @@
 
 @inject LocalityHandler Handler
 @inject NavigationManager NavigationManager
+@inject IMessageService MessageService
 
 <AuthorizeView>
     <Button Icon="@AntDesign.IconType.Outline.Plus"
@@ -41,7 +42,16 @@
         if (result.Success)
         {
             _isVisible = false;
-            await OnAdd.InvokeAsync();
+            await Task.WhenAll(
+                MessageService.Info("Localidade adicionada"),
+                OnAdd.InvokeAsync())
+                .ConfigureAwait(false);
+        }
+        else
+        {
+            await MessageService
+                .Error("Erro ao adicionar localidade")
+                .ConfigureAwait(false);
         }
     }
 
