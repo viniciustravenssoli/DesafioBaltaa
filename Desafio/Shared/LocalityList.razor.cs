@@ -12,10 +12,26 @@ public partial class LocalityList
     private int _totalRows;
     private string _state = string.Empty;
     private string _city = string.Empty;
-    private string _id = string.Empty;
     private bool _loading = true;
 
     private IEnumerable<LocalityModel> _localities = [];
+
+    private async Task LoadByIdAsync(string id)
+    {
+        _loading = true;
+
+        await Task.Delay(500, Token);
+
+        var result = await QueryHandler.GetLocalityAsync(id, Token);
+        if (result.Success)
+        {
+            _localities = [result.Result];
+        }
+
+        _loading = false;
+
+        StateHasChanged();
+    }
 
     private async Task LoadAsync()
     {
@@ -60,6 +76,15 @@ public partial class LocalityList
         return LoadAsync();
     }
 
+    public Task OnSearchCode(string id)
+    {
+        _state = string.Empty;
+        _city = string.Empty;
+        _pageIndex = 1;
+
+        return LoadByIdAsync(id);
+    }
+
     [Inject] ILocalityQueryHandler QueryHandler { get; set; } = null!;
 
     [CascadingParameter] CancellationToken Token { get; set; }
@@ -68,7 +93,8 @@ public partial class LocalityList
     {
         if (firstRender)
         {
-            await LoadAsync();
+            await LoadAsync()
+                .ConfigureAwait(false);
         }
     }
 }

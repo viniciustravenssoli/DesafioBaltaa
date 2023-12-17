@@ -3,6 +3,10 @@
 @rendermode InteractiveServer
 
 <div class="d-flex flex-row flex-wrap gap-1 m-2 justify-content-end">
+    <Search Placeholder="Buscar código"
+            AllowClear="true"
+            ValueChanged="OnSearchCode"
+            WrapperStyle="width: 200px;" />
     <Search Placeholder="Buscar estado"
             AllowClear="true"
             ValueChanged="OnSearchState"
