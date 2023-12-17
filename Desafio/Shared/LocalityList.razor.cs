@@ -1,4 +1,7 @@
-﻿using AntDesign.TableModels;
+﻿using AntDesign;
+using AntDesign.TableModels;
+using BaltaDesafioBlazor.Domain.Contexts.LocalityContext.Delete;
+using BaltaDesafioBlazor.Domain.Handlers.Commands;
 using BaltaDesafioBlazor.Domain.Handlers.Queries;
 using BaltaDesafioBlazor.Shared.Models.Locality;
 using Microsoft.AspNetCore.Components;
@@ -57,26 +60,26 @@ public partial class LocalityList
         StateHasChanged();
     }
 
-    public Task OnChange(QueryModel<LocalityModel> queryModel)
+    private Task OnChange(QueryModel<LocalityModel> queryModel)
     {
         return LoadAsync();
     }
 
-    public Task OnSearchState(string state)
+    private Task OnSearchState(string state)
     {
         _state = state;
         _pageIndex = 1;
         return LoadAsync();
     }
 
-    public Task OnSearchCity(string city)
+    private Task OnSearchCity(string city)
     {
         _city = city;
         _pageIndex = 1;
         return LoadAsync();
     }
 
-    public Task OnSearchCode(string id)
+    private Task OnSearchCode(string id)
     {
         _state = string.Empty;
         _city = string.Empty;
@@ -85,7 +88,23 @@ public partial class LocalityList
         return LoadByIdAsync(id);
     }
 
+    private async Task OnDelete(LocalityModel locality)
+    {
+        var command = new DeleteLocalityCommand(locality.Id);
+        var result = await LocalityHandler.ExecuteAsync(command, Token);
+
+        if (result.Success)
+        {
+            await Task.WhenAll(
+                MessageService.Success("Localidade excluída com sucesso"),
+                LoadAsync())
+                .ConfigureAwait(false);
+        }
+    }
+
     [Inject] ILocalityQueryHandler QueryHandler { get; set; } = null!;
+    [Inject] LocalityHandler LocalityHandler { get; set; } = null!;
+    [Inject] IMessageService MessageService { get; set; } = null!;
 
     [CascadingParameter] CancellationToken Token { get; set; }
 

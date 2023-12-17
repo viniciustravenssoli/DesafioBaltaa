@@ -15,7 +15,7 @@
             AllowClear="true"
             ValueChanged="OnSearchCity"
             WrapperStyle="width: 200px;" />
-    <AddLocalityDialog OnAdd="LoadAsync"/>
+    <AddLocalityDialog OnAdd="LoadAsync" />
 </div>
 
 <Table TItem="LocalityModel"
@@ -26,21 +26,29 @@
        @bind-PageSize="_pageSize"
        Total="_totalRows"
        Size="TableSize.Small"
-       ScrollY="70vh">
+       ScrollY="70vh"
+       Context="locality">
     <PropertyColumn Property="c=>c.Id" />
     <PropertyColumn Property="c=>c.City" />
     <PropertyColumn Property="c=>c.State" />
-    <ActionColumn Title="Ações">
-        <Space>
-            <SpaceItem>
-                <EditLocalityDialog Locality="@context" 
-                                    OnEdit="LoadAsync"/>
-            </SpaceItem>
-            <SpaceItem>
-                <Button Type="@AntDesign.ButtonType.Text"
-                        Icon="@AntDesign.IconType.Outline.Delete"
-                        Danger="true" />
-            </SpaceItem>
-        </Space>
-    </ActionColumn>
+    <AuthorizeView>
+        <ActionColumn Title="Ações">
+            <Space>
+                <SpaceItem>
+                    <EditLocalityDialog Locality="@locality"
+                                        OnEdit="LoadAsync" />
+                </SpaceItem>
+                <SpaceItem>
+                    <Popconfirm Title="Deletar localidade?"
+                                OnConfirm="@(() => OnDelete(locality))"
+                                OkText="Excluir"
+                                CancelText="Cancelar">
+                        <Button Type="@AntDesign.ButtonType.Text"
+                                Icon="@AntDesign.IconType.Outline.Delete"
+                                Danger="true" />
+                    </Popconfirm>
+                </SpaceItem>
+            </Space>
+        </ActionColumn>
+    </AuthorizeView>
 </Table>
