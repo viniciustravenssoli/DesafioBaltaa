@@ -15,7 +15,7 @@
             AllowClear="true"
             ValueChanged="OnSearchCity"
             WrapperStyle="width: 200px;" />
-    <AddLocalityDialog/>
+    <AddLocalityDialog />
 </div>
 
 <Table TItem="LocalityModel"
@@ -26,24 +26,20 @@
        @bind-PageSize="_pageSize"
        Total="_totalRows"
        Size="TableSize.Small"
-       ScrollY="70vh"
-       Context="table">
+       ScrollY="70vh">
     <PropertyColumn Property="c=>c.Id" />
     <PropertyColumn Property="c=>c.City" />
     <PropertyColumn Property="c=>c.State" />
-    <AuthorizeView>
-        <ActionColumn Title="Ações">
-            <Space>
-                <SpaceItem>
-                    <Button Type="@AntDesign.ButtonType.Text"
-                            Icon="@AntDesign.IconType.Outline.Edit" />
-                </SpaceItem>
-                <SpaceItem>
-                    <Button Type="@AntDesign.ButtonType.Text"
-                            Icon="@AntDesign.IconType.Outline.Delete"
-                            Danger="true" />
-                </SpaceItem>
-            </Space>
-        </ActionColumn>
-    </AuthorizeView>
+    <ActionColumn Title="Ações">
+        <Space>
+            <SpaceItem>
+                <EditLocalityDialog Locality="@context" />
+            </SpaceItem>
+            <SpaceItem>
+                <Button Type="@AntDesign.ButtonType.Text"
+                        Icon="@AntDesign.IconType.Outline.Delete"
+                        Danger="true" />
+            </SpaceItem>
+        </Space>
+    </ActionColumn>
 </Table>

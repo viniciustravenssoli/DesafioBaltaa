@@ -11,8 +11,8 @@ public static class LocalityModelExtensions
         return new(model.Id, model.City, model.State);
     }
 
-    public static UpdateLocalityCommand ToUpdateCommand(this LocalityModel model)
+    public static UpdateLocalityCommand ToUpdateCommand(this LocalityModel model, string oldId)
     {
-        return new(model.Id, model.City, model.State);
+        return new(oldId, model.Id, model.City, model.State);
     }
 }

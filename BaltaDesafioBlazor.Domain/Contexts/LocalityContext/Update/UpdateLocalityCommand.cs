@@ -4,8 +4,10 @@ using BaltaDesafioBlazor.Domain.Extensions;
 
 namespace BaltaDesafioBlazor.Domain.Contexts.LocalityContext.Update;
 
-public sealed class UpdateLocalityCommand(string id, string city, string state) : AbstractLocality(id, city, state), ICommand
+public sealed class UpdateLocalityCommand(string oldId, string newId, string city, string state) : AbstractLocality(newId, city, state), ICommand
 {
+    public string OldId { get; } = oldId;
+
     public bool IsValid
         => Validate().IsValid;
 

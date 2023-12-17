@@ -45,10 +45,43 @@ internal class LocalityRepository(DataContext dataContext) : ILocalityRepository
     {
         try
         {
-            dataContext.Localities.Update(locality);
+            await dataContext.Localities
+                .Where(i => i.Id == locality.Id)
+                .ExecuteUpdateAsync(props => props
+                .SetProperty(prop => prop.City, locality.City)
+                .SetProperty(prop => prop.State, locality.State),
+                cancellationToken)
+                .ConfigureAwait(false);
 
-            await dataContext
-                .SaveChangesAsync(cancellationToken)
+            return true;
+        }
+        catch (Exception)
+        {
+            return false;
+        }
+    }
+
+    public async Task<bool> DeleteAndUpdateAsync(string oldId, Locality locality, CancellationToken cancellationToken = default)
+    {
+        await using var transaction = dataContext.Database.BeginTransaction();
+
+        try
+        {
+            await dataContext.Localities
+                .Where(i => i.Id == oldId)
+                .ExecuteDeleteAsync(cancellationToken)
+                .ConfigureAwait(false);
+
+            var entity = new Locality(locality.Id, locality.City, locality.State);
+
+            await dataContext.Localities
+                .AddAsync(entity, cancellationToken)
+                .ConfigureAwait(false);
+
+            await dataContext.SaveChangesAsync(cancellationToken);
+
+            await transaction
+                .CommitAsync(cancellationToken)
                 .ConfigureAwait(false);
 
             return true;

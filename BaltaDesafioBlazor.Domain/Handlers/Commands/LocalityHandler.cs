@@ -32,20 +32,22 @@ public sealed class LocalityHandler(ILocalityRepository localityRepository) :
         if (!command.IsValid)
             return GenericCommandResult.ErrorResult(command.Errors);
 
-        var locality = await localityRepository
-            .GetAsync(command.Id, cancellationToken)
-            .ConfigureAwait(false);
+        bool result;
 
-        if (locality is null)
+        var locality = new Locality(command.Id, command.City, command.State);
+
+        if (command.OldId == command.Id)
         {
-            return GenericCommandResult.ErrorResult(["Localidade não encontrada"]);
+            result = await localityRepository
+                .UpdateAsync(locality, cancellationToken)
+                .ConfigureAwait(false);
         }
-
-        locality.Update(command.Id, command.City, command.State);
-
-        var result = await localityRepository
-            .UpdateAsync(locality, cancellationToken)
-            .ConfigureAwait(false);
+        else
+        {
+            result = await localityRepository
+                .DeleteAndUpdateAsync(command.OldId, locality, cancellationToken)
+                .ConfigureAwait(false);
+        }
 
         return result
             ? GenericCommandResult.SuccessResult(locality.Id)

@@ -51,22 +51,27 @@
     {
         if (firstRender)
         {
-            if (Locality is not null)
-            {
-                _locality = new()
-                {
-                    Id = Locality.Id,
-                    City = Locality.City,
-                    State = Locality.State
-                };
-
-                StateHasChanged();
-            }
+            Default();
         }
     }
 
     public void Reset()
     {
         _form.Reset();
+    }
+
+    public void Default()
+    {
+        if (Locality is not null)
+        {
+            _locality = new()
+            {
+                Id = Locality.Id,
+                City = Locality.City,
+                State = Locality.State
+            };
+
+            StateHasChanged();
+        }
     }
 }
