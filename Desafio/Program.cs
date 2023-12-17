@@ -3,9 +3,11 @@ using Microsoft.AspNetCore.Identity;
 using BaltaDesafioBlazor.Areas.Identity;
 using BaltaDesafioBlazor.Infra.Data;
 using BaltaDesafioBlazor.Infra.Extensions;
+using BaltaDesafioBlazor.Domain.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddDomain();
 builder.Services.AddInfrastructure();
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
