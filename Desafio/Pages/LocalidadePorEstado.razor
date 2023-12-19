@@ -62,7 +62,7 @@ else
     {
         await Task.Delay(500, tokenSource.Token);//User friendly delay
 
-        var result = await Handler.GetLocalitiesAsync(state: estadoPesquisado, cancellationToken: tokenSource.Token);
+        var result = await Handler.GetLocalitiesAsync(state: estadoPesquisado,cancellationToken: tokenSource.Token);
 
         if (result.Success)
         {
